@@ -1,4 +1,4 @@
-import pytest, pickle
+import pytest, pickle, os
 import pandas as pd
 
 from ml.model import load_model
@@ -8,7 +8,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
 def train_dataset():
-    data_path = './Deploying-a-Scalable-ML-Pipeline-with-FastAPI/data/census.csv'
+    data_path = os.path.join(os.path.dirname(__file__), 'data', 'census.csv')
     df = pd.read_csv(data_path)
     train, test = train_test_split(df, test_size=0.2, random_state=42)
     X_train, y_train, encoder, lb = process_data(
@@ -24,6 +24,7 @@ def test_data_shape():
     """
     Check data path and sizes
     """
+    data_path = os.path.join(os.path.dirname(__file__), 'data', 'census.csv')
     df = pd.read_csv(data_path)
 
     assert df.shape[0] > 0, 'Data set has no rows'

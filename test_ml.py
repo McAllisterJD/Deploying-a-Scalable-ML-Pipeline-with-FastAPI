@@ -47,7 +47,7 @@ def test_compute_model_metrics():
     """
     X_train, y_train = train_dataset()
 
-    model = pickle.load(open(model_path), 'rb')
+    model = pickle.load(open(model_path, 'rb'))
     preds = inference(model, X_train)
     precision, recall, fbeta = compute_model_metrics(y_train, preds)
 

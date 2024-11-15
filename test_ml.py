@@ -2,7 +2,7 @@ import pytest, pickle, os
 import pandas as pd
 
 from ml.model import load_model
-from train_model import model_path, data_path, compute_model_metrics, inference, cat_features
+from train_model import model_path, compute_model_metrics, inference, cat_features # , data_path
 from ml.data import process_data
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split

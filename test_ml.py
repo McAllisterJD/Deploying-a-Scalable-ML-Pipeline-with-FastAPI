@@ -47,9 +47,7 @@ def test_compute_model_metrics():
     """
     X_train, y_train = train_dataset()
 
-    savepath = '/home/jmcallister/Deploying-a-Scalable-ML-Pipeline-with-FastAPI/model/model.pkl'
-
-    model = pickle.load(open(savepath, 'rb'))
+    model = pickle.load(open(model_path), 'rb'))
     preds = inference(model, X_train)
     precision, recall, fbeta = compute_model_metrics(y_train, preds)
 

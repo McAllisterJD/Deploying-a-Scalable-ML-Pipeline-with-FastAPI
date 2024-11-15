@@ -1,28 +1,57 @@
-import pytest
-# TODO: add necessary import
+import pytest, pickle
+import pandas as pd
 
-# TODO: implement the first test. Change the function name and input as needed
-def test_one():
+from ml.model import load_model
+from train_model import model_path, data_path, compute_model_metrics, inference, cat_features
+from ml.data import process_data
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+
+def train_dataset():
+    df = pd.read_csv(data_path)
+    train, test = train_test_split(df, test_size=0.2, random_state=42)
+    X_train, y_train, encoder, lb = process_data(
+        train,
+        categorical_features=cat_features,
+        label='salary',
+        training=True
+    )
+    return X_train, y_train
+
+# Implement the first test.
+def test_data_shape():
     """
-    # add description for the first test
+    Check data path and sizes
     """
-    # Your code here
-    pass
+    df = pd.read_csv(data_path)
+
+    assert df.shape[0] > 0, 'Data set has no rows'
+    assert df.shape[1] > 0, 'Data set has no columns'
 
 
-# TODO: implement the second test. Change the function name and input as needed
-def test_two():
+# Implement the second test.
+def test_model_algorithm():
     """
-    # add description for the second test
+    Check that the model uses the expected algorithm.
     """
-    # Your code here
-    pass
+    model = load_model(model_path)
+    assert isinstance(model, RandomForestClassifier), 'Model is not a Random Forest'
 
 
-# TODO: implement the third test. Change the function name and input as needed
-def test_three():
+# Implement the third test.
+def test_compute_model_metrics():
     """
-    # add description for the third test
+    Check model metrics
     """
-    # Your code here
-    pass
+    X_train, y_train = train_dataset()
+
+    savepath = '/home/jmcallister/Deploying-a-Scalable-ML-Pipeline-with-FastAPI/model/model.pkl'
+
+    model = pickle.load(open(savepath, 'rb'))
+    preds = inference(model, X_train)
+    precision, recall, fbeta = compute_model_metrics(y_train, preds)
+
+    assert round(precision, 4) == 0.8823
+    assert round(recall, 4) == 0.6789
+    assert round(fbeta, 4) == 0.7674
+
